@@ -1,39 +1,37 @@
 package com.example.spring_boot_project.dao;
 
 import com.example.spring_boot_project.models.Employee;
-import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
-    private final EntityManagerFactory entityManagerFactory;
+    @PersistenceContext
+    private final EntityManager entityManager;
 
-    public EmployeeDaoImpl(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
+    public EmployeeDaoImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     @Override
     public List<Employee> getAllEmployees() {
-        List<Employee> empList = entityManagerFactory
-                .createEntityManager()
-                .createQuery("from Employee", Employee.class).getResultList();
-        System.out.println("empList from DAO: " + empList);
-        return empList;
+        return entityManager.createQuery("from Employee", Employee.class).getResultList();
     }
 
     @Override
     public void addEmployee(Employee employee) {
-        entityManagerFactory.createEntityManager().merge(employee);
+        entityManager.merge(employee);
     }
 
     @Override
     public Employee getEmployeeById(long id) {
-        return entityManagerFactory.createEntityManager().getReference(Employee.class, id);
+        return entityManager.find(Employee.class, id);
     }
 
     @Override
     public void deleteEmployeeById(long id) {
-        entityManagerFactory.createEntityManager().remove(this.getEmployeeById(id));
+        entityManager.remove(this.getEmployeeById(id));
     }
 }
