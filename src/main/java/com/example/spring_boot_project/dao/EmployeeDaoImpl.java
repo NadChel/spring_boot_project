@@ -22,7 +22,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public void addEmployee(Employee employee) {
-        entityManager.merge(employee);
+        Employee returnedEmployee = entityManager.merge(employee);
+        employee.setId(returnedEmployee.getId());
     }
 
     @Override

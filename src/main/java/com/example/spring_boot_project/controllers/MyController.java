@@ -17,10 +17,7 @@ public class MyController {
 
     @GetMapping("/employees")
     public List<Employee> showAllEmployees() {
-        System.out.println("Handler");
-        List<Employee> empList = employeeService.getAllEmployees();
-        System.out.println("empList from handler: " + empList);
-        return empList;
+        return employeeService.getAllEmployees();
     }
 
     @GetMapping("/employees/{id}")
@@ -42,7 +39,6 @@ public class MyController {
 
     @DeleteMapping("/employees/{id}")
     public String deleteEmployeeById(@PathVariable long id) {
-
         employeeService.deleteEmployeeById(id);
         return String.format("Employee with id %d was removed from the database", id);
     }
